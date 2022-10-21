@@ -90,10 +90,58 @@ public class App {
         return false;
     }
 
-    public static String camelCase(String eingabe[]){
-        String ergebnis = new String();
+    public static String camelCase(String eingabe) {
+        StringBuilder stringBuilder = new StringBuilder();
+        char[] fertigesCharArray = eingabe.toCharArray();
+        boolean erstesZeichenImWort = false;
+        if(fertigesCharArray[0] >= 97 && fertigesCharArray[0] <= 122){
+            fertigesCharArray[0] -= 32;
 
-        return ergebnis;
+        }
+        stringBuilder.append(fertigesCharArray[0]);
+        for(int i = 1; i < fertigesCharArray.length; i++){
+            if(fertigesCharArray[i] >= 65 && fertigesCharArray[i] <= 90){ // grossbuchstabe
+                if(erstesZeichenImWort == false){ // nur kleinmachen wenn es nicht der erste buchstabe is
+                    fertigesCharArray[i] += 32;
+                }
+                erstesZeichenImWort = false;
+                stringBuilder.append(fertigesCharArray[i]);
+            }
+            else if(fertigesCharArray[i] >= 97 && fertigesCharArray[i] <= 122){ //kleinbichstabe
+                if(erstesZeichenImWort == true){ //gross wenn erster buchstabe im wort
+                    fertigesCharArray[i] -= 32;
+                }
+                stringBuilder.append(fertigesCharArray[i]);
+                erstesZeichenImWort = false;
+            }
+            else if(fertigesCharArray[i] == 32){
+                erstesZeichenImWort = true;
+            }
+            else if((fertigesCharArray[i] >= 33 && fertigesCharArray[i] <= 47) || (fertigesCharArray[i] >= 58 && fertigesCharArray[i] <= 64 )){
+                fertigesCharArray[i] = 32;
+                //stringBuilder.append(fertigesCharArray[i]);
+            }
+        }
+        return stringBuilder.toString(); //stringBuilder als String uebergeben
+    }
+    public static int checkDigit(int[] code){
+        int[] gewichtung  = new int[code.length];
+        int[] product = new int[code.length];
+        int sum = 0;
+        for (int i = 0; i < code.length; i++) {
+            gewichtung[i] = i + 2;
+        }
+        for (int i = 0; i < code.length; i++) {
+            product[i] = gewichtung[i] * code[i];
+            sum += product[i];
+        }
+        if (11 - (sum%11) == 10){
+            return 0;
+        }
+        else if (11 - (sum%11) == 11){
+            return 5;
+        }
+        return (11 - (sum%11));
     }
 
     // Implement all methods as public static
@@ -104,12 +152,14 @@ public class App {
 
      //   App.oneMonthCalendar(30, 2);
        // App.lcg(12345);
-      //  App.guessingGame(randomNumberBetweenOneAndHundred());
+      //  App.guessingGame(App.randomNumberBetweenOneAndHundred());
            // App.swapArrays(array1, array2);
 
 
+      //  System.out.println(App.camelCase("My Name Isn't Alice"));
+        System.out.println(App.checkDigit(new int[]{1, 3, 2, 4}));
 
-        // Beispiel        String[] names = new Strinq[3];
+                // Beispiel        String[] names = new Strinq[3];
         // test your method implementations here
         // make method calls
         // print their results
